@@ -59,4 +59,11 @@ public class Aggregate {
             stdev += Math.pow((i - avg), 2);
         return Math.sqrt((stdev / arr.length));
     }
+
+    static int[] allFoundFibs = new int[10000];
+    public static int fibonacci(int n) {
+        if (n <= 1) return n;
+        if (allFoundFibs[n] == 0) allFoundFibs[n] = fibonacci(n - 1) + fibonacci(n - 2);
+        return allFoundFibs[n];
+    }
 }
