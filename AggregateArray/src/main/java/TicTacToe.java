@@ -10,6 +10,7 @@ public class TicTacToe {
     int size;
     int diag;
     int antiDiag;
+    int totalMoves;
 
     /**
      * This is the constructor of the class so it
@@ -25,6 +26,7 @@ public class TicTacToe {
                 gameDis[i][j] = '+';
             }
         }
+        totalMoves = 0;
         diag = 0;
         antiDiag = 0;
     }
@@ -94,9 +96,15 @@ public class TicTacToe {
             return player;
         }
         display();
-        for (int i = 0 ; i < gameDis.length; i++)
-            for (int j = 0; j < gameDis[i].length; j++)
-                if (gameDis[i][j] == '+') return 0;
+        totalMoves++;
+
+        // More efficient way to find if the graph was filled.
+        if (totalMoves != size * size) return 0;
+
+        // Less efficient method.
+//        for (int i = 0 ; i < gameDis.length; i++)
+//            for (int j = 0; j < gameDis[i].length; j++)
+//                if (gameDis[i][j] == '+') return 0;
         return -1;
     }
 
