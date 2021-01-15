@@ -21,20 +21,21 @@ public class App {
         int counter = 0;
 
         // This while loop allows the user to play x amount of games
-        while (counter < games) {
+        for (int i = 0; i < games; i++) {
             System.out.println();
             int player = 1;
-            Scanner sc = new Scanner(System.in);
             int x = 0;
             int y = 0;
             TicTacToe ttt = new TicTacToe(size);
-            System.out.println("Player 1 is 'X' and Player 2 is 'O'");
-            int chosenPlayer = Console.readInt("Do you want to be player 1 or 2? ", 1, 2);
-            System.out.println();
+            System.out.println("Player 1 'X' and Player 2 is 'O'");
+            int chosenPlayer = RNG.coinFlip();
             if (chosenPlayer == player) {
+                System.out.println("You will go first.");
                 System.out.println("You are player " + player % 2 + ", put in the x and y coordinate");
                 x = Console.readInt("First, type in the x coordinate. ", 0, ttt.getSqLength() - 1);
                 y = Console.readInt("Second, type in the y coordinate. ", 0, ttt.getSqLength() - 1);
+            } else {
+                System.out.println("CPU will go first.");
             }
             int move = ttt.move(x, y, (player++) % 2);
             while (move == 0 || move == -2) {
@@ -61,7 +62,7 @@ public class App {
                 }
                 move = ttt.move(x, y, (player++) % 2);
                 if (move == -2) player++;
-            } // end of inner while loop
+            } // end of while loop
 
             if (move == -1) {
                 System.out.println("This game was tied!");
@@ -75,12 +76,18 @@ public class App {
             }
             counter++;
             System.out.println("Game " + counter + ": You: " + wins +  ", CPU: " + losses + ", Ties: " + ties);
-        } // end of outer while loop
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        } // end of for loop
+        report(wins, losses, ties, games);
+    }
+
+    /**
+     * Reports the results.
+     * @param wins
+     * @param losses
+     * @param ties
+     * @param games
+     */
+    public static void report(int wins, int losses, int ties, int games) {
         System.out.println("Results:");
         System.out.println("Wins: " + wins);
         System.out.println("Losses: " + losses);
@@ -88,7 +95,6 @@ public class App {
         double winPercentage = (double)(2 * wins + ties) / (double)(2 * games) * 100;
         System.out.println("Your win percentage is: " + round(winPercentage, 2) + "%");
     }
-
     /**
      * This returns a double that rounds to the x amount of places
      * @param value double that we are trying to round

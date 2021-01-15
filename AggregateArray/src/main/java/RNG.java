@@ -13,8 +13,9 @@ public class RNG {
         return rand;
     }
 
-    public static boolean coinFlip (boolean bool) {
-        return rng.nextBoolean();
+    public static int coinFlip () {
+        if (rng.nextBoolean() == true) return 1;
+        else return 2;
     }
 
     public static int playRPS() {
