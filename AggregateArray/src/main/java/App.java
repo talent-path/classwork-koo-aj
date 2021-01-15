@@ -1,9 +1,15 @@
 import jdk.swing.interop.SwingInterOpUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class App {
+    /**
+     * Runs the main code.
+     * @param args
+     */
     public static void main(String[] args) {
         System.out.println("Welcome to a game of Tic Tac Toe");
         int games = Console.readInt("How many games do you want to play with the CPU? It came be up to 10 games. ", 1, 10);
@@ -13,6 +19,8 @@ public class App {
         int losses = 0;
         int ties = 0;
         int counter = 0;
+
+        // This while loop allows the user to play x amount of games
         while (counter < games) {
             System.out.println();
             int player = 1;
@@ -53,7 +61,8 @@ public class App {
                 }
                 move = ttt.move(x, y, (player++) % 2);
                 if (move == -2) player++;
-            }
+            } // end of inner while loop
+
             if (move == -1) {
                 System.out.println("This game was tied!");
                 ties++;
@@ -66,13 +75,30 @@ public class App {
             }
             counter++;
             System.out.println("Game " + counter + ": You: " + wins +  ", CPU: " + losses + ", Ties: " + ties);
-        }
+        } // end of outer while loop
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
         System.out.println();
         System.out.println("Results:");
         System.out.println("Wins: " + wins);
         System.out.println("Losses: " + losses);
         System.out.println("Ties: " + ties);
         double winPercentage = (double)(2 * wins + ties) / (double)(2 * games) * 100;
-        System.out.println("Your win percentage is: " + winPercentage + "%");
+        System.out.println("Your win percentage is: " + round(winPercentage, 2) + "%");
+    }
+
+    /**
+     * This returns a double that rounds to the x amount of places
+     * @param value double that we are trying to round
+     * @param places round to the given integer
+     * @return will return the value that is rounded to x places.
+     */
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
