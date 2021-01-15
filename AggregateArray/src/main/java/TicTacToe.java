@@ -74,6 +74,8 @@ public class TicTacToe {
             display();
             if (player == 0) player = 2;
             System.out.println("Player " + player + " wins!");
+            System.out.println();
+            System.out.println();
             return player;
         }
         display();
