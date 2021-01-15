@@ -1,5 +1,8 @@
 import java.util.Arrays;
 
+/**
+ * The TicTacToe class will allow the player to make his/her move.
+ */
 public class TicTacToe {
     char[][] gameDis;
     int[] rows;
