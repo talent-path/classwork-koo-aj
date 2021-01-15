@@ -30,12 +30,12 @@ public class App {
             System.out.println("Player 1 'X' and Player 2 is 'O'");
             int chosenPlayer = RNG.coinFlip();
             if (chosenPlayer == player) {
-                System.out.println("You will go first.");
+                System.out.println("Player 1 (You) will go first.");
                 System.out.println("You are player " + player % 2 + ", put in the x and y coordinate");
                 x = Console.readInt("First, type in the x coordinate. ", 0, ttt.getSqLength() - 1);
                 y = Console.readInt("Second, type in the y coordinate. ", 0, ttt.getSqLength() - 1);
             } else {
-                System.out.println("CPU will go first.");
+                System.out.println("Player 1 (CPU) will go first.");
             }
             int move = ttt.move(x, y, (player++) % 2);
             while (move == 0 || move == -2) {
