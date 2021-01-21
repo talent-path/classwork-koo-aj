@@ -1,8 +1,43 @@
 public class Application {
     public static void main(String[] args) {
-//        fizzBuzz(100);
-//        System.out.println(canBalance(new int[] {1, 2, 3, 4, 1, 4, 3, 2, 1}));
-        System.out.println(noTriples(new int[] {1, 1, 2, 1, 2, 1, 1, 2, 2, 2}));
+//        addBigNum(new int[] {1, 2, 3}, new int[] {4, 5, 7});
+//        maxMirror(new int[] {1, 2, 3, 8, 9, 3, 2, 1});
+        System.out.println(maxMirror(new int[] {5, 9, 9, 6, 5, 4, 9, 9, 2}));
+    }
+
+    public static int maxMirror(int[] nums) {
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int count = 0;
+            for (int j = nums.length - 1; j >= 0 && i + count < nums.length; j--) {
+                if (nums[i + count] == nums[j]) count++;
+                else {
+                    max = Math.max(count, max);
+                    count = 0;
+                }
+            }
+            max = Math.max(count, max);
+        }
+        return max;
+    }
+
+    public static int[] addBigNum(int[] left, int[] right) {
+        int[] ans;
+        if (left.length > right.length)
+            ans = new int[left.length + 1];
+        else
+            ans = new int[right.length + 1];
+        int carry = 0;
+        int sum = 0;
+        for (int i = 0; i < right.length; i++) {
+            int x = right[i];
+            int y = left[i];
+            sum = x + y + carry;
+            carry = sum / 10;
+            ans[i] = sum % 10;
+        }
+        if (carry > 0) ans[ans.length - 1] = carry;
+        return ans;
     }
 
     public static boolean noTriples(int[] nums) {

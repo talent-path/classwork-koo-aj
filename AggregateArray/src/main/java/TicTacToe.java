@@ -42,6 +42,8 @@ public class TicTacToe {
      */
     public int move(int row, int col, int player) {
         int p = player == 1 ? 1 : -1;
+        // We enter this if/else statement to check if someone has
+        // already placed there move in that coordinate
         if (p == 1) {
             // player 1
             if (gameDis[row][col] != 'X' && gameDis[row][col] != 'O')
@@ -86,6 +88,8 @@ public class TicTacToe {
             diag += p;
         if(row + col == size - 1)
             antiDiag += p;
+        // if the rows, cols, diag, or antiDiag equals the size
+        // then that player wins
         if(Math.abs(rows[row]) == size ||
                 Math.abs(cols[col]) == size ||
                 Math.abs(diag) == size ||
@@ -99,6 +103,7 @@ public class TicTacToe {
         totalMoves++;
 
         // More efficient way to find if the graph was filled.
+        // integer 0 is stating that the game is still not over and not tied
         if (totalMoves != size * size) return 0;
 
         // Less efficient method.
