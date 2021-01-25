@@ -1,10 +1,77 @@
+import java.util.*;
+
 public class Application {
+    static class FirstTwoCharComparator implements Comparator<String> {
+        @Override
+        public int compare(String a, String b) {
+            return a.substring(0,2).compareTo(b.substring(0,2));
+        }
+    }
     public static void main(String[] args) {
 //        addBigNum(new int[] {1, 2, 3}, new int[] {4, 5, 7});
 //        maxMirror(new int[] {1, 2, 3, 8, 9, 3, 2, 1});
-        System.out.println(maxMirror(new int[] {5, 9, 9, 6, 5, 4, 9, 9, 2}));
+//        System.out.println(maxMirror(new int[] {5, 9, 9, 6, 5, 4, 9, 9, 2}));
+//        List<String> testList = new ArrayList<>();
+//        testList.add("Bob");
+//        testList.add("Bobby");
+//        testList.add("Robert");
+//        testList.add("Roberto");
+//        testList.add("Alice");
+//        testList.add("Alicia");
+//        groupByFirstTwoCharacter(testList.toArray(new String[testList.size()]));
+        System.out.println(reverseDigit(54321));
     }
 
+    public static int reverseDigit(int digit) {
+        int ans = 0;
+        while (digit != 0) {
+            ans *= 10;
+            ans += (digit % 10);
+            digit /= 10;
+        }
+        return ans;
+    }
+
+    public static int getLongestChain() {
+        int[] longestChain = {0, 0};
+        int counter = 0;
+        for (int i = 2; i <= 100000000; i++) {
+            if (i % 4 == 0) continue;
+            long x = i;
+            while (x != 1) {
+                if (x % 2 == 1) {
+                    x = x * 3 + 1;
+                    counter++;
+                }
+                else {
+                    x /= 2;
+                    counter++;
+                }
+            }
+            if (counter > longestChain[1]) {
+                longestChain[0] = i;
+                longestChain[1] = counter;
+            }
+            counter = 0;
+        }
+        return longestChain[0];
+    }
+
+    public static Map<String, List<String>> groupByFirstTwoCharacter(String[] strArr) {
+//        Arrays.sort(strArr, new FirstTwoCharComparator());
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (String str : strArr) {
+            String s = str.length() <= 2 ? str : str.substring(0, 2);
+            if (!map.containsKey(s)) {
+                List<String> list = new ArrayList<>();
+                list.add(str);
+                map.put(s, list);
+            } else {
+                map.get(s).add(str);
+            }
+        }
+        return map;
+    }
     public static int maxMirror(int[] nums) {
         int max = 0;
         for (int i = 0; i < nums.length; i++) {
