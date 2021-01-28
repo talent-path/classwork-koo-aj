@@ -1,5 +1,6 @@
 package com.tp.connectfour.services;
 
+import com.tp.connectfour.exceptions.InvalidGameIdException;
 import com.tp.connectfour.models.ConnectFourGame;
 import com.tp.connectfour.models.ConnectFourViewModel;
 import com.tp.connectfour.persistence.ConnectFourDao;
@@ -8,6 +9,9 @@ import com.tp.connectfour.persistence.ConnectFourDao;
 import com.tp.connectfour.exceptions.NullGuessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ConnectFourService {
@@ -19,6 +23,21 @@ public class ConnectFourService {
         int randomPlayer = Rng.nextInt(1, 2);
         int startGame = (randomPlayer == 1) ? dao.startGame('X') : dao.startGame('O');
         return this.getGameById(startGame);
+    }
+
+    public List<ConnectFourViewModel> getAllGames() {
+        List<ConnectFourGame> allGames = dao.getAllGames();
+        List<ConnectFourViewModel> converted = new ArrayList<>();
+
+        for( ConnectFourGame toConvert : allGames ){
+            converted.add( convertModel(toConvert));
+        }
+
+        return converted;
+    }
+
+    public void deleteGame(Integer gameId) throws InvalidGameIdException {
+        dao.deleteGame( gameId );
     }
 
     public ConnectFourViewModel getGameById(Integer gameId) {

@@ -1,5 +1,6 @@
 package com.tp.connectfour.controller;
 
+import com.tp.connectfour.exceptions.InvalidGameIdException;
 import com.tp.connectfour.models.ConnectFourViewModel;
 import com.tp.connectfour.services.ConnectFourService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,17 @@ public class ConnectFourController {
     public ConnectFourViewModel startGame() {
         ConnectFourViewModel game = service.startGame();
         return game;
+    }
+
+    @DeleteMapping("/delete/{gameId}")
+    public String deleteGame( @PathVariable Integer gameId ){
+        try {
+            service.deleteGame( gameId );
+            return "Game " + gameId + " successfully deleted.";
+        } catch (InvalidGameIdException e) {
+            return e.getMessage();
+        }
+
     }
 
 //    @PostMapping("/makeMove")
