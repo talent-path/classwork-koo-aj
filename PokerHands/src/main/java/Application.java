@@ -46,77 +46,34 @@ public class Application {
         int player1WinCount = 0;
 
         // until there is no more next line it will run the while loop
-//        while (sc.hasNextLine()) {
-//            String currLine = sc.nextLine();
-//            String[] str = currLine.split(" ");
-//            int[] bothHands = new int[str.length];
-//            for (int i = 0; i < str.length; i++) {
-//                int v = faceValue.get(str[i].charAt(0));
-//                int s = suit.get(str[i].charAt(1));
-//                bothHands[i] = v * 4 + s;
-//            }
-//            Card[] hand1Cards = new Card[5];
-//            Card[] hand2Cards = new Card[5];
-//            for( int i = 0; i < bothHands.length; i++ ){
-//                if( i < 5 ){
-//                    hand1Cards[i] = new Card(bothHands[i]);
-//                } else {
-//                    hand2Cards[i-5] = new Card(bothHands[i]);
-//                }
-//            }
-//
-//            PokerHand hand1 = new PokerHand(hand1Cards);
-//            PokerHand hand2 = new PokerHand(hand2Cards);
-//
-//
-//            int hand1WinsResult = hand1.compareTo(hand2);
-//            if( hand1WinsResult == -1 ) player1WinCount++;
-//        }
-
-        //Code for the combinations assignment
-        int[] arr1 = {48, 49, 50, 51, 44, 45, 46};
-
-        Card[] card1 = new Card[arr1.length];
-        for (int i = 0; i < card1.length; i++)
-            card1[i] = new Card(arr1[i]);
-        Combinations comb = new Combinations();
-        List<Card> selected1 = new ArrayList<>();
-        List<PokerHand> allCombinations1  = new ArrayList<>();
-
-        comb.getCombinations( card1, 0, 5, selected1, allCombinations1);
-
-        Collections.sort(allCombinations1, new Comparator<PokerHand>() {
-            @Override
-            public int compare(PokerHand o1, PokerHand o2) {
-                return o1.compareTo(o2);
+        while (sc.hasNextLine()) {
+            String currLine = sc.nextLine();
+            String[] str = currLine.split(" ");
+            int[] bothHands = new int[str.length];
+            for (int i = 0; i < str.length; i++) {
+                int v = faceValue.get(str[i].charAt(0));
+                int s = suit.get(str[i].charAt(1));
+                bothHands[i] = v * 4 + s;
             }
-        });
-
-        int[] arr2 = {0, 1, 50, 51, 44, 45, 46};
-        Card[] card2 = new Card[arr1.length];
-        for (int i = 0; i < card2.length; i++)
-            card2[i] = new Card(arr2[i]);
-        List<Card> selected2 = new ArrayList<>();
-        List<PokerHand> allCombinations2  = new ArrayList<>();
-        comb.getCombinations( card2, 0, 5, selected2, allCombinations2);
-
-        Collections.sort(allCombinations1, new Comparator<PokerHand>() {
-            @Override
-            public int compare(PokerHand o1, PokerHand o2) {
-                return o1.compareTo(o2);
+            Card[] hand1Cards = new Card[5];
+            Card[] hand2Cards = new Card[5];
+            for( int i = 0; i < bothHands.length; i++ ){
+                if( i < 5 ){
+                    hand1Cards[i] = new Card(bothHands[i]);
+                } else {
+                    hand2Cards[i-5] = new Card(bothHands[i]);
+                }
             }
-        });
-        int result = allCombinations1.get(0).compareTo(allCombinations2.get(0));
-        System.out.println();
-//        for( PokerHand combination : allCombinations ) {
-//            for( Card notCard : combination.getCards() ) {
-//                System.out.print(notCard.getCardValue() + " ");
-//                System.out.println( notCard.getCardSuit() );
-//            }
-//            System.out.println();
-//        }
 
-//        System.out.println("Player 1 has won " + player1WinCount + " games.");
+            PokerHand hand1 = new PokerHand(hand1Cards);
+            PokerHand hand2 = new PokerHand(hand2Cards);
+
+
+            int hand1WinsResult = hand1.compareTo(hand2);
+            if( hand1WinsResult == -1 ) player1WinCount++;
+        }
+
+        System.out.println("Player 1 has won " + player1WinCount + " games.");
 
     }
 

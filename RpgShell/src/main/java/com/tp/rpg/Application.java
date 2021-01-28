@@ -58,9 +58,9 @@ public class Application {
                 attacker.attack(defender);
             } else {
                 //TODO: consider other actions
+                //
 
-
-                throw new UnsupportedOperationException();
+//                throw new UnsupportedOperationException();
             }
 
             Character temp = a;

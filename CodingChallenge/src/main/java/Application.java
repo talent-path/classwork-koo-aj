@@ -19,7 +19,18 @@ public class Application {
 //        testList.add("Alice");
 //        testList.add("Alicia");
 //        groupByFirstTwoCharacter(testList.toArray(new String[testList.size()]));
-        System.out.println(reverseDigit(54321));
+//        System.out.println(reverseDigit(54321));
+    }
+
+    public static boolean isPerfect(int num) {
+        int sum = 1;
+        for (int i = 2; i * i <= num; i++) {
+            if (sum > num) return false;
+            if (num % i == 0)
+                if (i * i != num) sum += i + (num / i);
+                else sum += i;
+        }
+        return sum == num && num != 1;
     }
 
     public static int reverseDigit(int digit) {
