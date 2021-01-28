@@ -1,13 +1,14 @@
 package com.tp.connectfour.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConnectFourGame {
 
     private Integer gameId;
-    private Integer chosenCol;
-    private List<Integer> guessedCol;
+//    private Integer chosenCol;
+    private HashMap<Integer, Integer> guessedCol;
     private Character currentPlayer;
     private char[][] gameBoard;
 
@@ -18,11 +19,11 @@ public class ConnectFourGame {
     public Character getCurrentPlayer() {
         return currentPlayer;
     }
-    public Integer getChosenCol() {
-        return chosenCol;
-    }
+//    public Integer getChosenCol() {
+//        return chosenCol;
+//    }
 
-    public List<Integer> getGuessedCol() {
+    public HashMap<Integer, Integer> getGuessedCol() {
         return guessedCol;
     }
 
@@ -36,7 +37,7 @@ public class ConnectFourGame {
     public ConnectFourGame(Integer gameId, Character currentPlayer){
         this.gameId = gameId;
         this.currentPlayer = currentPlayer;
-        guessedCol = new ArrayList<>();
+        guessedCol = new HashMap<>();
         gameBoard = new char[6][7];
 
         for (int i = 0; i < gameBoard.length; i++) {
@@ -50,7 +51,7 @@ public class ConnectFourGame {
     public ConnectFourGame( ConnectFourGame that ){
         this.gameId = that.gameId;
         this.currentPlayer = that.currentPlayer;
-        guessedCol = new ArrayList<>();
+        guessedCol = new HashMap<>();
         gameBoard = new char[6][7];
 
         for (int i = 0; i < gameBoard.length; i++) {

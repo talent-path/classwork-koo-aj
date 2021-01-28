@@ -1,7 +1,7 @@
 package com.tp.connectfour.controller;
 
 public class MakeMoveRequest {
-    private String makeMove;
+    private Integer makeMove;
     private Integer gameId;
 
     public Integer getGameId() {
@@ -12,11 +12,11 @@ public class MakeMoveRequest {
         this.gameId = gameId;
     }
 
-    public String getMakeMove() {
+    public Integer getMakeMove() {
         return makeMove;
     }
 
-    public void getMakeMove(String makeMove) {
+    public void getMakeMove(Integer makeMove) {
         this.makeMove = makeMove;
     }
 }

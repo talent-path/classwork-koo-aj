@@ -1,5 +1,6 @@
 package com.tp.connectfour.models;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ConnectFourViewModel {
@@ -7,6 +8,7 @@ public class ConnectFourViewModel {
     private Integer gameId;
     private Character currentPlayer;
     char[][] gameBoard;
+    HashMap<Integer, Integer> column;
 
     public Integer getGameId(){
         return gameId;
@@ -26,13 +28,13 @@ public class ConnectFourViewModel {
     public Character getCurrentPlayer() {
         return this.currentPlayer;
     }
-//    public List<Integer> getGuessCoordinates(){
-//        return guessCoordinates;
-//    }
-//
-//    public void setGuessCoordinates(List<Integer> guessCoordinates) {
-//        this.guessCoordinates = guessCoordinates;
-//    }
+    public HashMap<Integer, Integer> getColumn(){
+        return column;
+    }
+
+    public void setColumn(HashMap<Integer, Integer> column) {
+        this.column = column;
+    }
 
     public void setGameBoard(char[][] gameBoard) {
         this.gameBoard = gameBoard;

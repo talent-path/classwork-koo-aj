@@ -70,4 +70,14 @@ public class ConnectFourInMemDao implements ConnectFourDao{
         }
     }
 
+    @Override
+    public void updateGame(ConnectFourGame game) {
+        for( int i = 0; i < allGames.size(); i++){
+            if( allGames.get(i).getGameId().equals(game.getGameId())){
+                //we found the game to update
+                allGames.set(i, new ConnectFourGame(game) );
+            }
+        }
+    }
+
 }

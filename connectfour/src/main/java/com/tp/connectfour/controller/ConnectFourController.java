@@ -1,9 +1,12 @@
 package com.tp.connectfour.controller;
 
 import com.tp.connectfour.exceptions.InvalidGameIdException;
+import com.tp.connectfour.exceptions.InvalidMoveException;
+import com.tp.connectfour.exceptions.NullGuessException;
 import com.tp.connectfour.models.ConnectFourViewModel;
 import com.tp.connectfour.services.ConnectFourService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +38,14 @@ public class ConnectFourController {
 
     }
 
-//    @PostMapping("/makeMove")
-//    public ResponseEntity makeMove(@RequestBody MakeMoveRequest request) {
-//        ConnectFourViewModel toReturn = null;
-//        try {
-//            toReturn = service
-//        } catch (NullPointerException e) {
-//            e.getStackTrace();
-//        }
-//    }
+    @PostMapping("/makeMove")
+    public ResponseEntity makeMove(@RequestBody MakeMoveRequest request) {
+        ConnectFourViewModel toReturn = null;
+        try {
+            toReturn = service.makeMove(request.getGameId(), request.getMakeMove());
+        } catch (NullPointerException | NullGuessException | InvalidMoveException | InvalidGameIdException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok(toReturn);
+    }
 }

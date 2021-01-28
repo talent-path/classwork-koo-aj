@@ -14,4 +14,6 @@ public interface ConnectFourDao {
     List<ConnectFourGame> getAllGames();
 
     void deleteGame(Integer gameId) throws InvalidGameIdException;
+
+    void updateGame(ConnectFourGame game);
 }
