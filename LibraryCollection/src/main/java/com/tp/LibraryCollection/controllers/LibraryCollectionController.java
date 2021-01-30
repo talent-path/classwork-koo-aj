@@ -73,7 +73,7 @@ public class LibraryCollectionController {
      * @param author
      * @return
      */
-    @GetMapping("booksBy/author/{author}")
+    @GetMapping("/booksBy/author/{author}")
     public List<LibraryCollectionViewModel> getBooksByAuthor(@PathVariable String author) {
         return service.getBooksThroughAuthor(author);
     }
@@ -83,7 +83,7 @@ public class LibraryCollectionController {
      * @param year
      * @return
      */
-    @GetMapping("booksBy/yearPublished/{year}")
+    @GetMapping("/booksBy/yearPublished/{year}")
     public List<LibraryCollectionViewModel> getBooksByYear(@PathVariable Integer year) {
         return service.getBooksWithYear(year);
     }
@@ -94,7 +94,7 @@ public class LibraryCollectionController {
      * @return
      * @throws InvalidBookIDException
      */
-    @DeleteMapping("delete/{bookID}")
+    @DeleteMapping("/delete/{bookID}")
     public LibraryCollectionViewModel removeBookByID(@PathVariable Integer bookID) throws InvalidBookIDException {
         return service.removeBookByID(bookID);
     }
