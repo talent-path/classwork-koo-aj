@@ -12,21 +12,42 @@ import java.util.*;
 public class LibraryCollectionInMemDao implements LibraryCollectionDao{
 
     private LibraryCollection library;
+
     public LibraryCollectionInMemDao() {
         library = new LibraryCollection();
     }
 
+    /**
+     * Gets the book by it's ID.
+     * @param bookID
+     * @return Book
+     * @throws InvalidBookIDException
+     */
     @Override
     public Book getBookByID(Integer bookID) throws InvalidBookIDException {
         if (bookID == null) throw new InvalidBookIDException("The number given was null. Enter in a correct number");
         return library.findBook(bookID);
     }
 
+
+    /**
+     * Get all the Books by returning LibraryCollection HashMap<>\
+     * @return library
+     */
     @Override
     public LibraryCollection getAllBooks() {
         return library;
     }
 
+    /**
+     * Updates the book by grabbing all the needed information.
+     * @param bookID
+     * @param title
+     * @param author
+     * @param yearPublished
+     * @return Book
+     * @throws InvalidBookException
+     */
     @Override
     public Book updateBook(Integer bookID, String title, String author, Integer yearPublished) throws InvalidBookException {
         Book book = null;
@@ -40,6 +61,16 @@ public class LibraryCollectionInMemDao implements LibraryCollectionDao{
         }
         return book;
     }
+
+    /**
+     * Overloaded method of updateBook for multiiple authors.
+     * @param bookID
+     * @param title
+     * @param authors
+     * @param yearPublished
+     * @return Book
+     * @throws InvalidBookException
+     */
     @Override
     public Book updateBook(Integer bookID, String title, List<String> authors, Integer yearPublished) throws InvalidBookException {
         Book book = null;
@@ -54,6 +85,16 @@ public class LibraryCollectionInMemDao implements LibraryCollectionDao{
         return book;
     }
 
+    /**
+     * This starts the collection/adds book to collection.
+     * @param title
+     * @param author
+     * @param yearPublished
+     * @return bookID
+     * @throws InvalidYearPublishedException
+     * @throws InvalidAuthorException
+     * @throws OverloadLibraryException
+     */
     @Override
     public int startCollection(String title, String author, Integer yearPublished) throws InvalidYearPublishedException, InvalidAuthorException, OverloadLibraryException {
         if (yearPublished == null) {
@@ -76,6 +117,16 @@ public class LibraryCollectionInMemDao implements LibraryCollectionDao{
         return bookID;
     }
 
+    /**
+     * Overloaded method of startCollection for authors.
+     * @param title
+     * @param authors
+     * @param yearPublished
+     * @return bookID
+     * @throws InvalidYearPublishedException
+     * @throws InvalidAuthorException
+     * @throws OverloadLibraryException
+     */
     @Override
     public int startCollection(String title, List<String> authors, Integer yearPublished) throws InvalidYearPublishedException, InvalidAuthorException, OverloadLibraryException {
         if (yearPublished == null) {
@@ -96,6 +147,12 @@ public class LibraryCollectionInMemDao implements LibraryCollectionDao{
         return bookID;
     }
 
+    /**
+     * Deletes the book from the LibraryCollection HashMap<>
+     * @param bookID
+     * @return Book
+     * @throws InvalidBookIDException
+     */
     @Override
     public Book deleteBook(Integer bookID) throws InvalidBookIDException {
         Book book = null;

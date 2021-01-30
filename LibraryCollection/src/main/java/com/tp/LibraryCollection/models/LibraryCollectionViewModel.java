@@ -2,7 +2,18 @@ package com.tp.LibraryCollection.models;
 
 import java.util.*;
 
+/**
+ * This is the ViemModel class where the ViewModel allows us to see
+ * on Postman.
+ */
 public class LibraryCollectionViewModel {
+
+    private String title;
+    private String author;
+    private List<String> authors;
+    private Integer bookID;
+    private Integer publishedYear;
+
     public String getTitle() {
         return title;
     }
@@ -18,8 +29,6 @@ public class LibraryCollectionViewModel {
     public Integer getBookID() {
         return bookID;
     }
-
-
 
     public Integer getPublishedYear() {
         return publishedYear;
@@ -46,10 +55,4 @@ public class LibraryCollectionViewModel {
     public void setPublishedYear(Integer publishedYear) {
         this.publishedYear = publishedYear;
     }
-
-    private String title;
-    private String author;
-    private List<String> authors;
-    private Integer bookID;
-    private Integer publishedYear;
 }
