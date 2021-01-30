@@ -100,7 +100,7 @@ public class LibraryCollectionInMemDao implements LibraryCollectionDao{
         if (yearPublished == null) {
             throw new InvalidYearPublishedException("Tried to start a collection with a year published that is null");
         }
-        if (yearPublished < 618 && yearPublished > 2021)
+        if (yearPublished < 618 || yearPublished > 2021)
             throw new InvalidYearPublishedException("Published Year are within the boundaries of 618 AD and 2021 AD");
         if (author == null || author.equals("")) {
             throw new InvalidAuthorException("Tried to start a new collection with a author that is null or empty string");
@@ -132,6 +132,8 @@ public class LibraryCollectionInMemDao implements LibraryCollectionDao{
         if (yearPublished == null) {
             throw new InvalidYearPublishedException("Tried to start a collection with a year published that is null");
         }
+        if (yearPublished < 618 || yearPublished > 2021)
+            throw new InvalidYearPublishedException("Published Year are within the boundaries of 618 AD and 2021 AD");
         if (authors == null) {
             throw new InvalidAuthorException("Tried to start a new collection with a author that is null");
         }

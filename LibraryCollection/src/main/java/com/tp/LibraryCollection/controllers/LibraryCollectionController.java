@@ -101,17 +101,16 @@ public class LibraryCollectionController {
 
     /**
      * EDITS BOOKS
-     * @param bookID
      * @param request
      * @return
      */
-    @PostMapping("edit/{bookID}")
-    public LibraryCollectionViewModel editBook(@PathVariable Integer bookID, @RequestBody GuessRequest request) {
+    @PostMapping("/edit")
+    public LibraryCollectionViewModel editBook(@RequestBody GuessRequest request) {
         LibraryCollectionViewModel vM = null;
         try {
             if (request.getAuthors() == null)
-                vM = service.editByID(bookID, request.getTitle(), request.getAuthor(), request.getYearPublished());
-            else vM = service.editByID(bookID, request.getTitle(), request.getAuthors(), request.getYearPublished());
+                vM = service.editByID(request.getbookID(), request.getTitle(), request.getAuthor(), request.getYearPublished());
+            else vM = service.editByID(request.getbookID(), request.getTitle(), request.getAuthors(), request.getYearPublished());
         } catch (InvalidBookException e) {
             e.printStackTrace();
         } catch (InvalidBookIDException e) {

@@ -19,6 +19,11 @@ public class GuessRequest {
         return yearPublished;
     }
 
+    public int getbookID() {
+        return bookID;
+    }
+
+    private int bookID;
     private String title;
     private String author;
     private List<String> authors;
