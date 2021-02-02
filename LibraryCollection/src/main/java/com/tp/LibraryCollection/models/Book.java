@@ -8,11 +8,6 @@ public class Book {
 
     private Integer bookID;
 
-
-    public String getAuthor() {
-        return author;
-    }
-
     public Integer getYearPublished() {
         return yearPublished;
     }
@@ -21,9 +16,6 @@ public class Book {
         return authors;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public void setYearPublished(Integer yearPublished) {
         this.yearPublished = yearPublished;
@@ -33,12 +25,7 @@ public class Book {
         this.authors = authors;
     }
 
-    public boolean isAuthorVersusAuthors() {
-        if (this.getAuthor() != null && this.getAuthors() == null)
-            return true;
-        else
-            return false;
-    }
+
 
     public String getTitle() {
         return title;
@@ -49,25 +36,10 @@ public class Book {
     }
 
     private String title;
-    // TODO: To be more specific could have used the name class.
-    private String author;
     private List<String> authors;
     private Integer yearPublished;
-    private Name name;
 
-    /**
-     * This constructor is a book with one author.
-     * @param bookID
-     * @param author
-     * @param yearPublished
-     */
-    public Book(Integer bookID, String title, String author, Integer yearPublished) {
-        this.bookID = bookID;
-        this.title = title;
-        this.author = author;
-        this.authors = null;
-        this.yearPublished = yearPublished;
-    }
+
 
     /**
      * This constructor is for a book with multiple authors.
@@ -79,8 +51,15 @@ public class Book {
         this.bookID = bookID;
         this.title = title;
         this.authors = authors;
-        this.author = null;
         this.yearPublished = yearPublished;
+    }
+    public Book(Book that) {
+        this.bookID = that.bookID;
+        this.title = that.title;
+        List<String> list = new ArrayList<>();
+        list.addAll(that.authors);
+        this.authors = list;
+        this.yearPublished = that.yearPublished;
     }
 
 

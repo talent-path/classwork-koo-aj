@@ -15,14 +15,19 @@ public class LibraryCollectionService {
     @Autowired
     LibraryCollectionDao dao;
 
-    public LibraryCollectionViewModel startCollection(String title, String author, Integer yearPublished) throws InvalidYearPublishedException, OverloadLibraryException, InvalidAuthorException, InvalidBookIDException {
-        int id = dao.startCollection(title, author, yearPublished);
+    public LibraryCollectionViewModel addBook(String title, List<String> authors, Integer yearPublished) throws InvalidYearPublishedException, OverloadLibraryException, InvalidAuthorException, InvalidBookIDException, InvalidTitleException {
+        int id = dao.addBook(title, authors, yearPublished);
         return convertModel(dao.getBookByID(id));
     }
 
-    public LibraryCollectionViewModel startCollection(String title, List<String> authors, Integer yearPublished) throws InvalidYearPublishedException, OverloadLibraryException, InvalidAuthorException, InvalidBookIDException {
-        int id = dao.startCollection(title, authors, yearPublished);
-        return convertModel(dao.getBookByID(id));
+    public LibraryCollectionViewModel deleteBook(Integer bookID) throws InvalidBookIDException {
+        Book book = dao.deleteBook(bookID);
+        return convertModel(book);
+    }
+
+    public LibraryCollectionViewModel editBook(Integer bookID, String title, List<String> authors, Integer yearPublished) throws InvalidBookIDException, InvalidBookException, InvalidTitleException, InvalidYearPublishedException, InvalidAuthorException {
+        Book book = dao.updateBook(bookID, title, authors, yearPublished);
+        return convertModel(book);
     }
 
     public LibraryCollectionViewModel getBookByID(Integer bookID) throws InvalidBookIDException {
@@ -30,60 +35,30 @@ public class LibraryCollectionService {
         return convertModel( book );
     }
 
-    public LibraryCollectionViewModel removeBookByID(Integer bookID) throws InvalidBookIDException {
-        Book book = dao.deleteBook(bookID);
-        return convertModel(book);
-    }
-
-    public LibraryCollectionViewModel editByID(Integer bookID, String title, String author, Integer yearPublished) throws InvalidBookIDException, InvalidBookException {
-        Book book = dao.updateBook(bookID, title, author, yearPublished);
-        return convertModel(book);
-    }
-    public LibraryCollectionViewModel editByID(Integer bookID, String title, List<String> authors, Integer yearPublished) throws InvalidBookIDException, InvalidBookException {
-        Book book = dao.updateBook(bookID, title, authors, yearPublished);
-        return convertModel(book);
-    }
-
-
-    public List<LibraryCollectionViewModel> getAllBooksStartsWith(String startsWith) {
-        LibraryCollection lC = dao.getAllBooks();
+    public List<LibraryCollectionViewModel> getBookStartsWith(String startsWith) throws InvalidBookIDException {
+        List<Book> books = dao.getBookStartsWith(startsWith);
         List<LibraryCollectionViewModel> list = new ArrayList<>();
-        for (Integer toConvert : lC.iterator()) {
-            if (lC.findBook(toConvert).getTitle().startsWith(startsWith))
-                list.add(convertModel(lC.findBook(toConvert)));
-        }
+        for (Book book : books)
+            list.add(convertModel(book));
         return list;
     }
 
-    public List<LibraryCollectionViewModel> getBooksThroughAuthor(String author) {
-        LibraryCollection lC = dao.getAllBooks();
+    public List<LibraryCollectionViewModel> getBooksAuthor(String author) throws InvalidBookIDException {
+        List<Book> books = dao.getBooksByAuthor(author);
         List<LibraryCollectionViewModel> list = new ArrayList<>();
-        for (Integer toConvert : lC.iterator()) {
-            if (lC.findBook(toConvert).isAuthorVersusAuthors()) {
-                if (lC.findBook(toConvert).getAuthor().contains(author)) {
-                    list.add(convertModel(lC.findBook(toConvert)));
-                }
-            } else {
-                for (String curAuthor : lC.findBook(toConvert).getAuthors()) {
-                    if (curAuthor.contains(author)) {
-                        list.add(convertModel(lC.findBook(toConvert)));
-                    }
-                }
-            }
-        }
+        for (Book book : books)
+            list.add(convertModel(book));
         return list;
     }
 
-    public List<LibraryCollectionViewModel> getBooksWithYear(Integer year) {
-        LibraryCollection lC = dao.getAllBooks();
+    public List<LibraryCollectionViewModel> getBookPublishedYear(Integer year) throws InvalidBookIDException {
+        List<Book> books = dao.getBooksByPublishedYear(year);
         List<LibraryCollectionViewModel> list = new ArrayList<>();
-        for (Integer toConvert : lC.iterator()) {
-            if (lC.findBook(toConvert).getYearPublished().equals(year))
-                list.add(convertModel(lC.findBook(toConvert)));
-        }
+        for (Book book : books)
+            list.add(convertModel(book));
         return list;
     }
-    public List<LibraryCollectionViewModel> getAllBooksFromCollection() {
+    public List<LibraryCollectionViewModel> getAllBooks() {
         LibraryCollection lC = dao.getAllBooks();
         List<LibraryCollectionViewModel> list = new ArrayList<>();
         for (Integer toConvert : lC.iterator()) {
@@ -94,17 +69,10 @@ public class LibraryCollectionService {
 
     private LibraryCollectionViewModel convertModel(Book book) {
         LibraryCollectionViewModel vM = new LibraryCollectionViewModel();
-        if (book.isAuthorVersusAuthors()) {
-            vM.setTitle(book.getTitle());
-            vM.setAuthor(book.getAuthor());
-            vM.setPublishedYear(book.getYearPublished());
-            vM.setBookID(book.getBookID());
-        } else {
-            vM.setTitle(book.getTitle());
-            vM.setAuthors(book.getAuthors());
-            vM.setPublishedYear(book.getYearPublished());
-            vM.setBookID(book.getBookID());
-        }
+        vM.setTitle(book.getTitle());
+        vM.setAuthors(book.getAuthors());
+        vM.setPublishedYear(book.getYearPublished());
+        vM.setBookID(book.getBookID());
         return vM;
     }
 

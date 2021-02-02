@@ -1,6 +1,7 @@
 package com.tp.LibraryCollection.controllers;
 
 import com.tp.LibraryCollection.exceptions.*;
+import com.tp.LibraryCollection.models.Book;
 import com.tp.LibraryCollection.models.LibraryCollectionViewModel;
 import com.tp.LibraryCollection.services.LibraryCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +20,28 @@ public class LibraryCollectionController {
      * @return
      */
     @PostMapping("/define")
-    public ResponseEntity newBookEntry(@RequestBody GuessRequest request ) {
+    public ResponseEntity newBookEntry(@RequestBody Book request) {
         LibraryCollectionViewModel vM = null;
         try {
-            if (request.getAuthors() == null)
-                vM = service.startCollection(request.getTitle(), request.getAuthor(), request.getYearPublished());
-            else
-                vM = service.startCollection(request.getTitle(), request.getAuthors(), request.getYearPublished());
-        } catch (InvalidBookIDException e) {
-            e.printStackTrace();
-        } catch (OverloadLibraryException e) {
-            e.printStackTrace();
-        } catch (InvalidYearPublishedException e) {
-            e.printStackTrace();
-        } catch (InvalidAuthorException e) {
-            e.printStackTrace();
+            vM = service.addBook(request.getTitle(), request.getAuthors(), request.getYearPublished());
+        } catch (InvalidBookIDException | OverloadLibraryException | InvalidYearPublishedException | InvalidAuthorException | InvalidTitleException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(vM);
+    }
+    /**
+     * EDITS BOOKS
+     * @param request
+     * @return
+     */
+    @PutMapping("/edit")
+    public ResponseEntity editBook(@RequestBody Book request) {
+        LibraryCollectionViewModel vM = null;
+        try {
+            vM = service.editBook(request.getBookID(), request.getTitle(), request.getAuthors(), request.getYearPublished());
+        } catch (InvalidBookException | InvalidBookIDException |
+                InvalidYearPublishedException | InvalidTitleException | InvalidAuthorException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok(vM);
     }
@@ -44,7 +52,7 @@ public class LibraryCollectionController {
      */
     @GetMapping("/allBooks")
     public List<LibraryCollectionViewModel>  getAllBooks(){
-        return service.getAllBooksFromCollection();
+        return service.getAllBooks();
     }
 
     /**
@@ -64,8 +72,8 @@ public class LibraryCollectionController {
      * @return
      */
     @GetMapping("/booksBy/titleStartsWith/{startsWith}")
-    public List<LibraryCollectionViewModel> getAllBooksThatsStartsWith(@PathVariable String startsWith) {
-        return service.getAllBooksStartsWith(startsWith);
+    public List<LibraryCollectionViewModel> getAllBooksThatStartsWith(@PathVariable String startsWith) throws InvalidBookIDException {
+        return service.getBookStartsWith(startsWith);
     }
 
     /**
@@ -74,8 +82,8 @@ public class LibraryCollectionController {
      * @return
      */
     @GetMapping("/booksBy/author/{author}")
-    public List<LibraryCollectionViewModel> getBooksByAuthor(@PathVariable String author) {
-        return service.getBooksThroughAuthor(author);
+    public List<LibraryCollectionViewModel> getBooksByAuthor(@PathVariable String author) throws InvalidBookIDException {
+        return service.getBooksAuthor(author);
     }
 
     /**
@@ -84,8 +92,8 @@ public class LibraryCollectionController {
      * @return
      */
     @GetMapping("/booksBy/yearPublished/{year}")
-    public List<LibraryCollectionViewModel> getBooksByYear(@PathVariable Integer year) {
-        return service.getBooksWithYear(year);
+    public List<LibraryCollectionViewModel> getBooksByYear(@PathVariable Integer year) throws InvalidBookIDException {
+        return service.getBookPublishedYear(year);
     }
 
     /**
@@ -96,28 +104,6 @@ public class LibraryCollectionController {
      */
     @DeleteMapping("/delete/{bookID}")
     public LibraryCollectionViewModel removeBookByID(@PathVariable Integer bookID) throws InvalidBookIDException {
-        return service.removeBookByID(bookID);
+        return service.deleteBook(bookID);
     }
-
-    /**
-     * EDITS BOOKS
-     * @param request
-     * @return
-     */
-    @PostMapping("/edit")
-    public LibraryCollectionViewModel editBook(@RequestBody GuessRequest request) {
-        LibraryCollectionViewModel vM = null;
-        try {
-            if (request.getAuthors() == null)
-                vM = service.editByID(request.getbookID(), request.getTitle(), request.getAuthor(), request.getYearPublished());
-            else vM = service.editByID(request.getbookID(), request.getTitle(), request.getAuthors(), request.getYearPublished());
-        } catch (InvalidBookException e) {
-            e.printStackTrace();
-        } catch (InvalidBookIDException e) {
-            e.printStackTrace();
-        }
-        return vM;
-    }
-
-
 }

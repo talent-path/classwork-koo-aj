@@ -18,10 +18,6 @@ public class LibraryCollectionViewModel {
         return title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public List<String> getAuthors() {
         return authors;
     }
@@ -36,10 +32,6 @@ public class LibraryCollectionViewModel {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public void setAuthors(List<String> authors) {

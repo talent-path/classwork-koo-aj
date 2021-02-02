@@ -23,15 +23,5 @@ public class BookTests {
         authors1 = new ArrayList<>();
     }
 
-    @Test
-    public void testIsAuthorVersusAuthorsGoldenPath() {
-        book1 = new Book(100, "Outlier", author1, 2008);
-        authors1.add(author2);
-        authors1.add(author3);
-        book2 = new Book(101, "Reformation", authors1, 1455);
-        assertEquals(true, book1.isAuthorVersusAuthors());
-        assertEquals(false, book2.isAuthorVersusAuthors());
-        book1.setAuthors(authors1);
-        assertEquals(false, book1.isAuthorVersusAuthors());
-    }
+
 }

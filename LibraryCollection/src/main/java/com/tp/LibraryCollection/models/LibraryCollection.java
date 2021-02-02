@@ -21,25 +21,6 @@ public class LibraryCollection {
         this.collectionOfBooks = that.collectionOfBooks;;
     }
 
-    /**
-     * This is to add the book into the collection hashmap. There is one single author
-     * in this addBook method.
-     * @param bookID
-     * @param title
-     * @param name
-     * @param yearPublished
-     * @return Book
-     */
-    public Book addBook(int bookID, String title, String name, Integer yearPublished) {
-        try {
-            Book book = new Book(bookID, title, name, yearPublished);
-            collectionOfBooks.put(bookID, book);
-            return book;
-        } catch (NullPointerException e) {
-            e.getStackTrace();
-            return new Book(0, "nullTitle", "nullAuthor", 0);
-        }
-    }
 
     /**
      * This is an overloaded method of add book. Instead of one single author there are multiple
@@ -57,7 +38,7 @@ public class LibraryCollection {
             return book;
         } catch (NullPointerException e) {
             e.getStackTrace();
-            return new Book(0, "nullTitle", "nullAuthor", 0);
+            return new Book(0, "nullTitle", new ArrayList<>(), 0);
         }
     }
 
@@ -115,6 +96,13 @@ public class LibraryCollection {
      */
     public Set<Integer> iterator() {
         return collectionOfBooks.keySet();
+    }
+
+    /**
+     * Removes all of the K,V in the Library.
+     */
+    public void removeAll() {
+        collectionOfBooks.clear();
     }
 
 }

@@ -11,19 +11,15 @@ public interface LibraryCollectionDao {
 
     LibraryCollection getAllBooks();
 
-    Book updateBook(Integer bookId, String title, String author, Integer yearPublished) throws InvalidBookException;
+    Book updateBook(Integer bookId, String title, List<String> author, Integer yearPublished) throws InvalidBookException, InvalidTitleException, InvalidYearPublishedException, InvalidAuthorException;
 
-    Book updateBook(Integer bookId, String title, List<String> author, Integer yearPublished) throws InvalidBookException;
-    //returns bookID
-    // should throw nulls for
-    // InvalidBookIDException, InvalidAuthorIDException, and InvalidYearPublishedException
-    int startCollection(String title, String author, Integer yearPublished) throws OverloadLibraryException, InvalidYearPublishedException, InvalidAuthorException;
-
-    // returns bookID
-    // should throw nulls for
-    // TODO: LOOK AT NEXT LINE InvalidAuthorIDException (QUESTIONABLE)
-    // InvalidBookIDException, InvalidAuthorIDException (QUESTIONABLE), and InvalidYearPublishedException
-    int startCollection(String title, List<String> authors, Integer yearPublished) throws InvalidYearPublishedException, InvalidAuthorException, OverloadLibraryException;
+    int addBook(String title, List<String> authors, Integer yearPublished) throws InvalidYearPublishedException, InvalidAuthorException, OverloadLibraryException, InvalidTitleException;
 
     Book deleteBook(Integer bookID) throws InvalidBookIDException;
+
+    List<Book> getBookStartsWith(String startsWith) throws InvalidBookIDException;
+
+    List<Book> getBooksByAuthor(String author) throws InvalidBookIDException;
+
+    List<Book> getBooksByPublishedYear(Integer year) throws InvalidBookIDException;
 }
