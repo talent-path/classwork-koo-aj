@@ -20,6 +20,23 @@ public class Application {
 //        testList.add("Alicia");
 //        groupByFirstTwoCharacter(testList.toArray(new String[testList.size()]));
 //        System.out.println(reverseDigit(54321));
+        System.out.println(maxArea(new int[] {1,8,6,2,5,4,8,3,7}));
+    }
+
+    public static int maxArea(int[] height) {
+        int left = 0, right = height.length - 1;
+        int maxArea = 0;
+
+        while (left < right) {
+            maxArea = Math.max(maxArea, Math.min(height[left], height[right])
+                    * (right - left));
+            if (height[left] < height[right])
+                left++;
+            else
+                right--;
+        }
+
+        return maxArea;
     }
 
     public static boolean isPerfect(int num) {

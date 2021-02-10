@@ -113,7 +113,7 @@ public class LibraryCollectionInMemTests {
     }
 
     @Test
-    public void testEditBook() throws InvalidBookIDException, InvalidBookException {
+    public void testEditBook() throws InvalidBookIDException, InvalidBookException, InvalidTitleException, InvalidYearPublishedException, InvalidAuthorException {
         int testID1 = 0;
         int testID2 = 0;
         for (int bookID : toTest.getAllBooks().iterator()) {

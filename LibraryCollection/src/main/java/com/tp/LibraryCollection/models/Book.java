@@ -6,8 +6,6 @@ public class Book {
         return bookID;
     }
 
-    private Integer bookID;
-
     public Integer getYearPublished() {
         return yearPublished;
     }
@@ -35,6 +33,7 @@ public class Book {
         this.title = title;
     }
 
+    private Integer bookID;
     private String title;
     private List<String> authors;
     private Integer yearPublished;
