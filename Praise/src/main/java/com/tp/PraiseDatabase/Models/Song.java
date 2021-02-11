@@ -12,6 +12,9 @@ public class Song {
     private String tempo;
     private String pdfUrl;
 
+    public Song() {
+        //default constructor
+    }
     public Song(Integer songID, String title, List<String> artists, String timeSig, String tempo, String pdfUrl) {
         this.songID = songID;
         this.title = title;

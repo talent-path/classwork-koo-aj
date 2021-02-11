@@ -23,4 +23,9 @@ public class PraiseService {
         dao.linkSongArtist(artistList, songID);
         return new Song(songID, title, artists, timeSig, tempo, pdfUrl);
     }
+
+    public Song deleteSong(Integer songID) {
+        Song song = dao.deleteSong(songID);
+        return song;
+    }
 }

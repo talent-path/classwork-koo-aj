@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/praisedatabase")
 public class PraiseController {
     @Autowired
     PraiseService service;
@@ -18,5 +18,10 @@ public class PraiseController {
     public ResponseEntity addSong(@RequestBody Song s) {
         Song song = service.addSong(s.getTitle(), s.getArtists(), s.getTimeSig(), s.getTempo(), s.getPdfUrl());
         return ResponseEntity.ok(song);
+    }
+
+    @DeleteMapping("/delete/{songID}")
+    public Song deleteSong(@PathVariable Integer songID) {
+        return service.deleteSong(songID);
     }
 }

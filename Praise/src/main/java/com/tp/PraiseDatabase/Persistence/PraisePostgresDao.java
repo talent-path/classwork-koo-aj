@@ -9,10 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 @Component
-@Profile("production")
+@Profile({"production", "daoTesting"})
 public class PraisePostgresDao implements PraiseDao {
     @Autowired
     private JdbcTemplate template;
@@ -29,6 +30,19 @@ public class PraisePostgresDao implements PraiseDao {
                 " RETURNING \"songID\" as \"ID\";", new IDMapper()).get(0);
 
         return songID;
+    }
+    @Override
+    public Song getSongByID(Integer songID) {
+        //TODO : NEXT UP!
+        return null;
+    }
+
+    @Override
+    public Song deleteSong(Integer songID) {
+        Song song = getSongByID(songID);
+        template.execute("DELETE FROM public.\"Songs\"\n" +
+                "\tWHERE \"artistID\" = '';");
+        return song;
     }
 
     public void linkSongArtist(List<Integer> artistIDList, Integer songID) {
@@ -51,25 +65,41 @@ public class PraisePostgresDao implements PraiseDao {
 
     // we are getting the author id that already exist;
     // if it doesn't exist we return null
-    private Integer getArtistID(String artist) {
+    public Integer getArtistID(String artist) {
         List<Integer> id = new ArrayList<>();
-        id =  template.query("select \"artistID\" from \"Artists\" where \"artistName\" = '" + artist + "'", new IDMapper());
+        id =  template.query("select \"artistID\" as \"ID\" from \"Artists\" where \"artistName\" = '" + artist + "';", new IDMapper());
         if (id.isEmpty()) return null;
         else return id.get(0);
     }
     //adds artist if artist doesn't exist
-    private Integer addArtist(String artist) {
-        return template.query("insert into public.\"Artists\" (\"artistName\")\n" +
+    public Integer addArtist(String artist) {
+        Integer artistID = template.query("insert into public.\"Artists\" (\"artistName\")\n" +
                 "values ('" + artist + "')\n" +
                 "returning \"artistID\" as \"ID\";", new IDMapper()).get(0);
+        System.out.println(artistID);
+        return artistID;
     }
-
 
 
     class IDMapper implements RowMapper<Integer>{
         @Override
         public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
             return resultSet.getInt("ID");
+        }
+    }
+
+    class songMapper implements RowMapper<Song> {
+
+        @Override
+        public Song mapRow(ResultSet resultSet, int i) throws SQLException {
+            Integer songID = resultSet.getInt("songID");
+            String title = resultSet.getString("title");
+            List<String> artists = null;
+            String timeSig = resultSet.getString("timeSignature");
+            String tempo = resultSet.getString("tempo");
+            String pdfUrl = resultSet.getString("pdfUrl");
+            Song song = new Song(songID, title, artists, timeSig, tempo, pdfUrl);
+            return song;
         }
     }
 }
