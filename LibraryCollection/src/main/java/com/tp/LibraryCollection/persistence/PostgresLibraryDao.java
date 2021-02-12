@@ -67,7 +67,7 @@ public class PostgresLibraryDao implements LibraryCollectionDao{
 
         }
         // add the book to database
-        Book
+//        Book
         // for each author add an entry to the book table
         // connect id from the book to the id related to the author
         return null;

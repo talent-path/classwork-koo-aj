@@ -1,5 +1,8 @@
 package com.tp.PraiseDatabase.Services;
 
+import com.tp.PraiseDatabase.Exceptions.InvalidArtistsException;
+import com.tp.PraiseDatabase.Exceptions.InvalidSongException;
+import com.tp.PraiseDatabase.Exceptions.InvalidTitleException;
 import com.tp.PraiseDatabase.Models.Song;
 import com.tp.PraiseDatabase.Persistence.PraisePostgresDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,7 @@ public class PraiseService {
     @Autowired
     PraisePostgresDao dao;
 
-    public Song addSong(String title, List<String> artists, String timeSig, String tempo, String pdfUrl) {
+    public Song addSong(String title, List<String> artists, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
         List<Integer> artistList = new ArrayList<>();
         for (String artist : artists) {
             Integer artistID = dao.addOrRetrieve(artist);
@@ -24,8 +27,16 @@ public class PraiseService {
         return new Song(songID, title, artists, timeSig, tempo, pdfUrl);
     }
 
-    public Song deleteSong(Integer songID) {
+    public Song deleteSong(Integer songID) throws InvalidSongException {
         Song song = dao.deleteSong(songID);
         return song;
+    }
+
+    public List<Song> getAllSongs() {
+        return dao.getAllSong();
+    }
+
+    public Song editBook(Integer songID, String title, List<String> artists, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
+        return dao.updateSong(songID, title, artists, timeSig, tempo, pdfUrl);
     }
 }

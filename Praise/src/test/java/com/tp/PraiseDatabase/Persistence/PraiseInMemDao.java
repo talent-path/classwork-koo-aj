@@ -23,4 +23,14 @@ public class PraiseInMemDao implements PraiseDao {
     public Song getSongByID(Integer songID) {
         return null;
     }
+
+    @Override
+    public List<String> getArtistByID(Integer songID) {
+        return null;
+    }
+
+    @Override
+    public List<Song> getAllSong() {
+        return null;
+    }
 }
