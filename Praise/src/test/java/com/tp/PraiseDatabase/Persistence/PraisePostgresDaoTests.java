@@ -55,6 +55,26 @@ public class PraisePostgresDaoTests {
     }
 
     @Test
+    public void updateSongGoldenPathTest() throws InvalidSongException {
+        List<Integer> n = template.query("select \"artistID\" as ID from \"SongArtist\" where \"songID\" = '1';", new PraisePostgresDao.IDMapper());
+        assertEquals(n.get(0), 1);
+        assertEquals(n.size(), 1);
+        List<String> artistList = new ArrayList<>();
+        artistList.add("Lauren Daigle");
+        artistList.add("Kirk Franklin");
+        List<Integer> artists = new ArrayList<>();
+        for (String artist : artistList) {
+            Integer artistID = toTest.addOrRetrieve(artist);
+            artists.add(artistID);
+        }
+        Song song = toTest.updateSong(1, "How Great Thou Art", artistList, "4/4", "Fast", "google.com");
+        toTest.linkSongArtist(artists, 1);
+        List<Integer> m = template.query("select \"artistID\" as ID from \"SongArtist\" where \"songID\" = '1';", new PraisePostgresDao.IDMapper());
+        assertEquals(m.get(0), 4);
+        assertEquals(m.get(1), 5);
+    }
+
+    @Test
     public void addSongGoldenPathTest() throws InvalidSongException {
         // TODO: 1. initialize song
         List<String> artistList = new ArrayList<>();

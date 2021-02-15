@@ -159,13 +159,42 @@ public class PraisePostgresDao implements PraiseDao {
         template.execute("UPDATE \"Songs\" \n" +
                 "\tSET \"pdfUrl\" = '" + pdfUrl +"'\n" +
                 "\tWHERE \"Songs\".\"songID\" = '" + songID + "'");
-
-        // TODO: how to update ARTIST??
+        template.execute("DELETE FROM \"SongArtist\" WHERE \"songID\" = '" + songID + "';");
         return new Song(songID, title, artists, timeSig, tempo, pdfUrl);
     }
 
+    public List<Song> getSongsByTitle(String title) {
+        List<Song> songList = template.query("SELECT \"songID\", \"title\", " +
+                "\"tempo\", \"timeSignature\", \"pdfUrl\" FROM \"Songs\"", new songMapper());
+        for (Song song : songList) {
+            List<String> artists = getArtistByID(song.getSongID());
+            song.setArtists(artists);
+        }
+        List<Song> shavedSongList = new ArrayList<>();
+        for (Song song : songList) {
+            if (song.getTitle().equals(title) || song.getTitle().contains(title))
+                shavedSongList.add(song);
+        }
+        return shavedSongList;
+    }
 
-    class IDMapper implements RowMapper<Integer>{
+    public List<Song> getSongsByArtist(String artist) {
+        List<Song> songList = template.query("SELECT \"songID\", \"title\", " +
+                "\"tempo\", \"timeSignature\", \"pdfUrl\" FROM \"Songs\"", new songMapper());
+        for (Song song : songList) {
+            List<String> artists = getArtistByID(song.getSongID());
+            song.setArtists(artists);
+        }
+        List<Song> shavedSongList = new ArrayList<>();
+        for (Song song : songList) {
+            if (song.getTitle().equals(artist) || song.getTitle().contains(artist))
+                shavedSongList.add(song);
+        }
+        return shavedSongList;
+    }
+
+
+    static class IDMapper implements RowMapper<Integer>{
         @Override
         public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
             return resultSet.getInt("ID");

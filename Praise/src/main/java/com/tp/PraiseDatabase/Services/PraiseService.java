@@ -37,6 +37,21 @@ public class PraiseService {
     }
 
     public Song editBook(Integer songID, String title, List<String> artists, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
-        return dao.updateSong(songID, title, artists, timeSig, tempo, pdfUrl);
+        List<Integer> artistList = new ArrayList<>();
+        for (String artist : artists) {
+            Integer artistID = dao.addOrRetrieve(artist);
+            artistList.add(artistID);
+        }
+        Song song = dao.updateSong(songID, title, artists, timeSig, tempo, pdfUrl);
+        dao.linkSongArtist(artistList, songID);
+        return song;
+    }
+
+    public List<Song> getSongsByTitle(String title) {
+        return dao.getSongsByTitle(title);
+    }
+
+    public List<Song> getSongsByArtist(String artist) {
+        return dao.getSongsByArtist(artist);
     }
 }
