@@ -1,0 +1,19 @@
+.square{
+    width: 12.5%;
+    height: 100%;
+    display: inline-block;
+}
+
+.lightSquare{
+    background-color: lightgray;
+}
+
+.darkSquare{
+    background-color: darkgray;
+    
+
+}
+.pieces{
+    width: 100%;
+    height: 100%;
+}

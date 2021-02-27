@@ -10,7 +10,7 @@ import java.util.List;
 @Profile("serviceTest")
 public class PraiseInMemDao implements PraiseDao {
     @Override
-    public Integer addSong(String title, List<String> artists, String timeSig, String tempo, String pdfUrl) {
+    public Integer addSong(String title, List<String> artists, String key, String timeSig, String tempo, String pdfUrl) {
         return null;
     }
 

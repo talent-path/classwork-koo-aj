@@ -11,15 +11,17 @@ public class Song {
     private String timeSig;
     private String tempo;
     private String pdfUrl;
+    private String key;
 
     public Song() {
         //default constructor
     }
-    public Song(Integer songID, String title, List<String> artists, String timeSig, String tempo, String pdfUrl) {
+    public Song(Integer songID, String title, List<String> artists, String key, String timeSig, String tempo, String pdfUrl) {
         this.songID = songID;
         this.title = title;
         this.artists = artists;
         this.timeSig = timeSig;
+        this.key = key;
         this.tempo = tempo;
         this.pdfUrl = pdfUrl;
     }
@@ -28,6 +30,7 @@ public class Song {
         this.title = that.title;
         List<String> list = new ArrayList<>();
         list.addAll(that.artists);
+        this.key = that.key;
         this.timeSig = that.timeSig;
         this.tempo = that.tempo;
         this.pdfUrl = that.pdfUrl;
@@ -79,5 +82,13 @@ public class Song {
 
     public void setPdfUrl(String pdfUrl) {
         this.pdfUrl = pdfUrl;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

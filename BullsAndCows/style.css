@@ -1,0 +1,35 @@
+.container {
+    /* display:flex;
+    align-items: center; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+.boxContainer {
+    display:flex;
+    align-items: center;
+}
+.box {
+    /* display:inline; */
+    border: 3px solid black;
+    margin: 10px;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+}
+form {
+    text-align: center;
+}
+.text {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.titleText {
+    font-size: 50px;
+    font-weight: bold;
+}

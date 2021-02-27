@@ -1,0 +1,11 @@
+.square{
+    width: 12.5%;
+    height: 100%;
+    display: inline-block;
+    border-style: solid;
+}
+
+.pieces{
+    width: 100%;
+    height: 100%;
+}

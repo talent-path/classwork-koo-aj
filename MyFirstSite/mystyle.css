@@ -1,0 +1,38 @@
+td {
+    border: 1px solid black;
+    height: 50px;
+    width: 50px;
+}
+.myclass{
+    color: black;
+    display:inline-block;
+    width: 40px;
+    height: 40px;
+}
+.center {
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+  }
+
+  h1 {
+    width:500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+span.bold {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  p {
+    font-size: 16px;
+    color: black;
+    font-family: sans-serif;
+    padding: 22px;
+    max-width: 60%;
+    display: inline-block;
+    margin-top: 0px;
+  }

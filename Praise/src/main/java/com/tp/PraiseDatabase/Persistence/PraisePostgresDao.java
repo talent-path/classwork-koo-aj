@@ -1,19 +1,14 @@
 package com.tp.PraiseDatabase.Persistence;
 
-import com.tp.PraiseDatabase.Exceptions.InvalidArtistsException;
 import com.tp.PraiseDatabase.Exceptions.InvalidSongException;
-import com.tp.PraiseDatabase.Exceptions.InvalidTitleException;
 import com.tp.PraiseDatabase.Models.Song;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 @Component
@@ -27,7 +22,7 @@ public class PraisePostgresDao implements PraiseDao {
     }
 
     @Override
-    public Integer addSong(String title, List<String> artists, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
+    public Integer addSong(String title, List<String> artists, String key, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
         // add song to the praise database
         if (title == null || title.length() < 2)
             throw new InvalidSongException("Needs a longer title to be a sufficient title.");
@@ -48,9 +43,9 @@ public class PraisePostgresDao implements PraiseDao {
             throw new InvalidSongException("Tempo must be one of these six choices: \n" +
                     "Slow \n Medium \n Fast \n Slow/Medium \n Medium/Fast \n Slow/Medium/Fast");
         if (pdfUrl == null) throw new InvalidSongException("Write a url please.");
-        Integer songID = template.query("INSERT INTO public.\"Songs\"(title, \"timeSignature\", tempo, \"pdfUrl\")\n" +
-                "\tVALUES ('" + title + "', '" + timeSig + "', '" + tempo + "', '" + pdfUrl + "') " +
-                " RETURNING \"songID\" as \"ID\";", new IDMapper()).get(0);
+        Integer songID = template.query("INSERT INTO \"Songs\"(\"title\", \"key\", \"timeSignature\", \"tempo\", \"pdfUrl\")\n" +
+                "VALUES ('"+ title +"', '"+ key +"','"+ timeSig +"', '"+ tempo +"', '"+ pdfUrl +"')\n" +
+                "RETURNING \"songID\" as \"ID\"; ", new IDMapper()).get(0);
 
         return songID;
     }
@@ -126,7 +121,7 @@ public class PraisePostgresDao implements PraiseDao {
         return artistID;
     }
 
-    public Song updateSong(Integer songID, String title, List<String> artists, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
+    public Song updateSong(Integer songID, String title, List<String> artists, String key, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
         if (songID == null) throw new InvalidSongException("No ID entered. Please enter in ID.");
         if (title == null || title.length() < 2)
             throw new InvalidSongException("Needs a longer title to be a sufficient title.");
@@ -151,6 +146,9 @@ public class PraisePostgresDao implements PraiseDao {
                 "\tSET \"title\" = '" + title +"'\n" +
                 "\tWHERE \"Songs\".\"songID\" = '" + songID + "'");
         template.execute("UPDATE \"Songs\" \n" +
+                "\tSET \"key\" = '" + key +"'\n" +
+                "\tWHERE \"Songs\".\"songID\" = '" + songID + "'");
+        template.execute("UPDATE \"Songs\" \n" +
                 "\tSET \"timeSignature\" = '"+ timeSig +"'\n" +
                 "\tWHERE \"Songs\".\"songID\" = '" + songID + "'");
         template.execute("UPDATE \"Songs\" \n" +
@@ -160,7 +158,7 @@ public class PraisePostgresDao implements PraiseDao {
                 "\tSET \"pdfUrl\" = '" + pdfUrl +"'\n" +
                 "\tWHERE \"Songs\".\"songID\" = '" + songID + "'");
         template.execute("DELETE FROM \"SongArtist\" WHERE \"songID\" = '" + songID + "';");
-        return new Song(songID, title, artists, timeSig, tempo, pdfUrl);
+        return new Song(songID, title, artists, key, timeSig, tempo, pdfUrl);
     }
 
     public List<Song> getSongsByTitle(String title) {
@@ -206,10 +204,11 @@ public class PraisePostgresDao implements PraiseDao {
         public Song mapRow(ResultSet resultSet, int i) throws SQLException {
             Integer songID = resultSet.getInt("songID");
             String title = resultSet.getString("title");
+            String key = resultSet.getString("key");
             String timeSig = resultSet.getString("timeSignature");
             String tempo = resultSet.getString("tempo");
             String pdfUrl = resultSet.getString("pdfUrl");
-            Song song = new Song(songID, title, null, timeSig, tempo, pdfUrl);
+            Song song = new Song(songID, title, null, key, timeSig, tempo, pdfUrl);
             return song;
         }
     }

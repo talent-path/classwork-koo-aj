@@ -28,12 +28,12 @@ public class PraiseController {
     // Get songs by Artist
     @GetMapping("/songsByArtist")
     public List<Song> getSongsByArtist(@PathVariable String artist) {
-        return service.getSongsByArtist(artist);
+        return  service.getSongsByArtist(artist);
     }
 
     @PostMapping("/addSong")
     public ResponseEntity addSong(@RequestBody Song s) throws InvalidSongException {
-        Song song = service.addSong(s.getTitle(), s.getArtists(), s.getTimeSig(), s.getTempo(), s.getPdfUrl());
+        Song song = service.addSong(s.getTitle(), s.getArtists(), s.getKey(), s.getTimeSig(), s.getTempo(), s.getPdfUrl());
         return ResponseEntity.ok(song);
     }
 
@@ -41,7 +41,7 @@ public class PraiseController {
     public ResponseEntity editSong(@RequestBody Song request) {
         Song song = null;
         try {
-            song = service.editBook(request.getSongID(), request.getTitle(), request.getArtists(), request.getTimeSig(), request.getTempo(), request.getPdfUrl());
+            song = service.editBook(request.getSongID(), request.getTitle(), request.getArtists(), request.getKey(), request.getTimeSig(), request.getTempo(), request.getPdfUrl());
         } catch (InvalidSongException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

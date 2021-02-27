@@ -16,15 +16,15 @@ public class PraiseService {
     @Autowired
     PraisePostgresDao dao;
 
-    public Song addSong(String title, List<String> artists, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
+    public Song addSong(String title, List<String> artists, String key, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
         List<Integer> artistList = new ArrayList<>();
         for (String artist : artists) {
             Integer artistID = dao.addOrRetrieve(artist);
             artistList.add(artistID);
         }
-        Integer songID = dao.addSong(title, artists, timeSig, tempo, pdfUrl);
+        Integer songID = dao.addSong(title, artists, key, timeSig, tempo, pdfUrl);
         dao.linkSongArtist(artistList, songID);
-        return new Song(songID, title, artists, timeSig, tempo, pdfUrl);
+        return new Song(songID, title, artists, key, timeSig, tempo, pdfUrl);
     }
 
     public Song deleteSong(Integer songID) throws InvalidSongException {
@@ -36,13 +36,13 @@ public class PraiseService {
         return dao.getAllSong();
     }
 
-    public Song editBook(Integer songID, String title, List<String> artists, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
+    public Song editBook(Integer songID, String title, List<String> artists, String key, String timeSig, String tempo, String pdfUrl) throws InvalidSongException {
         List<Integer> artistList = new ArrayList<>();
         for (String artist : artists) {
             Integer artistID = dao.addOrRetrieve(artist);
             artistList.add(artistID);
         }
-        Song song = dao.updateSong(songID, title, artists, timeSig, tempo, pdfUrl);
+        Song song = dao.updateSong(songID, title, artists, key, timeSig, tempo, pdfUrl);
         dao.linkSongArtist(artistList, songID);
         return song;
     }

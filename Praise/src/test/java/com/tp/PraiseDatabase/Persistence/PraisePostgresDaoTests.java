@@ -30,9 +30,8 @@ public class PraisePostgresDaoTests {
         // TODO: TRUNCATE EVERYTHING BEFORE TESTING
         template.update("TRUNCATE \"SongArtist\", \"Songs\", \"Artists\" RESTART IDENTITY;");
         // TODO: INSERT
-        template.update("INSERT INTO public.\"Songs\"(\n" +
-                "\ttitle, \"timeSignature\", tempo, \"pdfUrl\")\n" +
-                "\tVALUES ('Forever', '4/4', 'Medium/Fast', 'https://www.google.com');");
+        template.update("INSERT INTO \"Songs\"(\"title\", \"key\", \"timeSignature\", \"tempo\", \"pdfUrl\")\n" +
+                "VALUES ('Jesus, I Love You', 'C','4/4', 'Slow', 'www.google.com');");
         template.update("INSERT INTO public.\"Artists\"(\n" +
                 "\t\"artistName\")\n" +
                 "\tVALUES ('Chris Tomlin');");
@@ -40,9 +39,8 @@ public class PraisePostgresDaoTests {
                 "\t\"artistID\", \"songID\")\n" +
                 "\tVALUES ('1', '1');");
 
-        template.update("INSERT INTO public.\"Songs\"(\n" +
-                "\ttitle, \"timeSignature\", tempo, \"pdfUrl\")\n" +
-                "\tVALUES ('I Could Sing of Your Love Forever', '4/4', 'Medium', 'https://www.google.com');");
+        template.update("INSERT INTO \"Songs\"(\"title\", \"key\", \"timeSignature\", \"tempo\", \"pdfUrl\")\n" +
+                "VALUES ('I Could Sing of Your Love Forever', 'A','4/4', 'Medium/Fast', 'www.google.com')");
         template.update("INSERT INTO public.\"Artists\"(\n" +
                 "\t\"artistName\")\n" +
                 "\tVALUES ('Shane and Shane'), ('Matt Redman');");
@@ -67,7 +65,7 @@ public class PraisePostgresDaoTests {
             Integer artistID = toTest.addOrRetrieve(artist);
             artists.add(artistID);
         }
-        Song song = toTest.updateSong(1, "How Great Thou Art", artistList, "4/4", "Fast", "google.com");
+        Song song = toTest.updateSong(1, "How Great Thou Art", artistList, "A", "4/4", "Fast", "google.com");
         toTest.linkSongArtist(artists, 1);
         List<Integer> m = template.query("select \"artistID\" as ID from \"SongArtist\" where \"songID\" = '1';", new PraisePostgresDao.IDMapper());
         assertEquals(m.get(0), 4);
@@ -81,7 +79,7 @@ public class PraisePostgresDaoTests {
         artistList.add("Chris Tomlin");
         artistList.add("Lauren Daigle");
         artistList.add("Matt Redman");
-        assertEquals(toTest.addSong("How Great Is Our God", artistList, "4/4", "Medium", "www.google.com"), 3);
+        assertEquals(toTest.addSong("How Great Is Our God", artistList, "A","4/4", "Medium", "www.google.com"), 3);
     }
 
     @Test
@@ -90,31 +88,37 @@ public class PraisePostgresDaoTests {
         artistList.add("Chris Tomlin");
 
         try {
-            assertEquals(toTest.addSong(null, artistList, "4/4", "Medium", "www.google.com"), null);
+            assertEquals(toTest.addSong(null, artistList, "A","4/4", "Medium", "www.google.com"), null);
             fail();
         } catch (InvalidSongException e) {
             e.printStackTrace();
         }
         try {
-            assertEquals(toTest.addSong("Hello", null, "4/4", "Medium", "www.google.com"), null);
+            assertEquals(toTest.addSong("Hello", null, "A","4/4", "Medium", "www.google.com"), null);
             fail();
         } catch (InvalidSongException e) {
             e.printStackTrace();
         }
         try {
-            assertEquals(toTest.addSong("Hello", artistList, null, "Medium", "www.google.com"), null);
+            assertEquals(toTest.addSong("Hello", artistList, null,"4/4", "Medium", "www.google.com"), null);
             fail();
         } catch (InvalidSongException e) {
             e.printStackTrace();
         }
         try {
-            assertEquals(toTest.addSong("Hello", artistList, "4/4", null, "www.google.com"), null);
+            assertEquals(toTest.addSong("Hello", artistList, "A",null, "Fast", "www.google.com"), null);
             fail();
         } catch (InvalidSongException e) {
             e.printStackTrace();
         }
         try {
-            assertEquals(toTest.addSong("Hello", artistList, "4/4", "Medium", null), null);
+            assertEquals(toTest.addSong("Hello", artistList, "A","4/4", null, "www.google.com"), null);
+            fail();
+        } catch (InvalidSongException e) {
+            e.printStackTrace();
+        }
+        try {
+            assertEquals(toTest.addSong("Hello", artistList, "A","4/4", "Medium", null), null);
             fail();
         } catch (InvalidSongException e) {
             e.printStackTrace();

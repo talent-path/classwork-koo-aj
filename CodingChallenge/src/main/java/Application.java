@@ -8,21 +8,108 @@ public class Application {
         }
     }
     public static void main(String[] args) {
-//        addBigNum(new int[] {1, 2, 3}, new int[] {4, 5, 7});
-//        maxMirror(new int[] {1, 2, 3, 8, 9, 3, 2, 1});
-//        System.out.println(maxMirror(new int[] {5, 9, 9, 6, 5, 4, 9, 9, 2}));
-//        List<String> testList = new ArrayList<>();
-//        testList.add("Bob");
-//        testList.add("Bobby");
-//        testList.add("Robert");
-//        testList.add("Roberto");
-//        testList.add("Alice");
-//        testList.add("Alicia");
-//        groupByFirstTwoCharacter(testList.toArray(new String[testList.size()]));
-//        System.out.println(reverseDigit(54321));
-        System.out.println(maxArea(new int[] {1,8,6,2,5,4,8,3,7}));
+        letterCasePermutation("a1b2");
+//        findCircleNum(new int[][] {{1,1,0,0}, {1,1,0,0}, {0,0,1,1}, {0,0,1,1}});
+//        minAreaRect(new int[][] {{1,1}, {1,3}, {3,1}, {3,3}, {2,2}});
+//        System.out.println(numPairsDivisibleBy60(new int[] {30,20,150,100,40}));
+        System.out.println(findAllConcatenatedWordsInADict(new String[] {"cat","cats","catsdogcats",
+                "dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"}));
     }
 
+    public static List<String> findAllConcatenatedWordsInADict(String[] words) {
+        HashSet<String> set = new HashSet<>();
+        for (String word : words)
+            set.add(word);
+        List<String> list = new ArrayList<>();
+        for (String word: words) {
+            int start = 0;
+            int count = 0;
+            for (int i = 1; i <= word.length(); i++) {
+//                System.out.println(word.substring(start, i));
+                if (set.contains(word.substring(start, i)) || set.contains(word.substring(0, i))) {
+                    start = i;
+                    count++;
+                    if (count == 2 && i == word.length()) {
+                        list.add(word);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    public static int numPairsDivisibleBy60(int[] time) {
+        int remainders[] = new int[60];
+        int count = 0;
+        for (int t: time) {
+            if (t % 60 == 0) { // check if a%60==0 && b%60==0
+                count += remainders[0];
+            } else { // check if a%60+b%60==60
+                System.out.println(60 - t % 60);
+                count += remainders[60 - t % 60];
+            }
+            remainders[t % 60]++; // remember to update the remainders
+        }
+        return count;
+    }
+    public static int minAreaRect(int[][] points) {
+        int min = Integer.MAX_VALUE;
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        for (int[] p : points) {
+            if (!map.containsKey(p[0])) {
+                map.put(p[0], new HashSet<>());
+            }
+            map.get(p[0]).add(p[1]);
+        }
+        for (int[] p1 : points) {
+            for (int[] p2 : points) {
+                if (p1[0] == p2[0] || p1[1] == p2[1]) // if have the same x or y
+                    continue;
+                if (map.get(p1[0]).contains(p2[1]) && map.get(p2[0]).contains(p1[1])) // find other two points
+                    min = Math.min(min, Math.abs(p1[0] - p2[0]) * Math.abs(p1[1] - p2[1]));
+            }
+        }
+        return min == Integer.MAX_VALUE ? 0 : min;
+    }
+    public static void dfs(int[][] m, int[] visited, int i) {
+        for (int j = 0; j < m.length; j++) {
+            if (m[i][j] == 1 && visited[j] == 0) {
+                visited[j] = 1;
+                dfs(m, visited, j);
+            }
+        }
+    }
+    public static int findCircleNum(int[][] m) {
+        int[] visited = new int[m.length];
+        int count = 0;
+        for (int i = 0; i < m.length; i++) {
+            if (visited[i] == 0) {
+                dfs(m, visited, i);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static List<String> letterCasePermutation(String s) {
+        List<String> list = new ArrayList<>();
+        char[] c = s.toCharArray();
+        backtrack(list, c, 0);
+        return list;
+    }
+
+    public static void backtrack(List<String> list, char[] c, int i) {
+        if (i == c.length)
+            list.add(new String(c));
+        else {
+            if (Character.isLetter(c[i])) {
+                c[i] = Character.toLowerCase(c[i]);
+                backtrack(list, c, i + 1);
+                c[i] = Character.toUpperCase(c[i]);
+            }
+            backtrack(list, c, i + 1);
+        }
+    }
     public static int maxArea(int[] height) {
         int left = 0, right = height.length - 1;
         int maxArea = 0;
